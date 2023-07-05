@@ -7,6 +7,36 @@ let defaultOptions = {
 			1: 1,
 			infinite: "infinite",
 		},
+		animationDelay: {
+			0: "0s",
+			75: "75ms",
+			100: "100ms",
+			150: "150ms",
+			200: "200ms",
+			300: "300ms",
+			500: "500ms",
+			700: "700ms",
+			1000: "1000ms",
+		},
+		animationDuration: {
+			DEFAULT: "150ms",
+			0: "0s",
+			75: "75ms",
+			100: "100ms",
+			150: "150ms",
+			200: "200ms",
+			300: "300ms",
+			500: "500ms",
+			700: "700ms",
+			1000: "1000ms",
+		},
+		animationTimingFunction: {
+			"DEFAULT": "cubic-bezier(0.4, 0, 0.2, 1)",
+			"linear": "linear",
+			"in": "cubic-bezier(0.4, 0, 1, 1)",
+			"out": "cubic-bezier(0, 0, 0.2, 1)",
+			"in-out": "cubic-bezier(0.4, 0, 0.2, 1)",
+		},
 	},
 	variants: {
 		animation: ["motion-reduce"],
@@ -55,7 +85,7 @@ function animationPlugin({ addUtilities, matchUtilities, theme, config, variants
 
 	matchUtilities(
 		{ "animation-duration": (value) => ({ animationDuration: value }) },
-		{ values: theme("animationDuration") ?? theme("transitionDuration") }
+		{ values: theme("animationDuration") }
 	);
 
 	matchUtilities(
@@ -63,10 +93,7 @@ function animationPlugin({ addUtilities, matchUtilities, theme, config, variants
 		{ values: theme("transitionDuration") }
 	);
 
-	matchUtilities(
-		{ "animation-delay": (value) => ({ animationDelay: value }) },
-		{ values: theme("animationDelay") ?? theme("transitionDelay") }
-	);
+	matchUtilities({ "animation-delay": (value) => ({ animationDelay: value }) }, { values: theme("animationDelay") });
 
 	matchUtilities(
 		{ "transition-delay": (value) => ({ transitionDelay: value }) },
@@ -75,7 +102,7 @@ function animationPlugin({ addUtilities, matchUtilities, theme, config, variants
 
 	matchUtilities(
 		{ "animation-ease": (value) => ({ animationTimingFunction: value }) },
-		{ values: theme("animationTimingFunction") ?? theme("transitionTimingFunction") }
+		{ values: theme("animationTimingFunction") }
 	);
 
 	matchUtilities(
