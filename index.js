@@ -18,6 +18,27 @@ let defaultOptions = {
 			700: "700ms",
 			1000: "1000ms",
 		},
+		animationFillMode: {
+			none: "none",
+			both: "both",
+			forwards: "forwards",
+			backwards: "backwards",
+		},
+		animationPlayState: {
+			paused: "paused",
+			running: "running",
+		},
+		animationComposition: {
+			add: "add",
+			replace: "replace",
+			accumulate: "accumulate",
+		},
+		animationDirection: {
+			"normal": "normal",
+			"reverse": "reverse",
+			"alternate": "alternate",
+			"alternate-reverse": "alternate-reverse",
+		},
 		animationDuration: {
 			DEFAULT: "150ms",
 			0: "0s",
@@ -51,36 +72,26 @@ function animationPlugin({ addUtilities, matchUtilities, theme, config, variants
 		})
 	);
 
-	addUtilities(
-		{
-			".fill-mode-none": { animationFillMode: "none" },
-			".fill-mode-both": { animationFillMode: "both" },
-			".fill-mode-forwards": { animationFillMode: "forwards" },
-			".fill-mode-backwards": { animationFillMode: "backwards" },
-		},
-		variants("animation")
+	matchUtilities({ "fill-mode": (value) => ({ animationFillMode: value }) }, { values: theme("animationFillMode") });
+
+	matchUtilities(
+		{ "play-state": (value) => ({ animationPlayState: value }) },
+		{ values: theme("animationPlayState") }
 	);
 
-	addUtilities(
-		{
-			".paused": { animationPlayState: "paused" },
-			".running": { animationPlayState: "running" },
-		},
-		variants("animation")
-	);
-
-	addUtilities(
-		{
-			".composition-add": { animationComposition: "add" },
-			".composition-replace": { animationComposition: "replace" },
-			".composition-accumulate": { animationComposition: "accumulate" },
-		},
-		variants("animation")
+	matchUtilities(
+		{ composition: (value) => ({ animationComposition: value }) },
+		{ values: theme("animationComposition") }
 	);
 
 	matchUtilities(
 		{ iterations: (value) => ({ animationIterationCount: value }) },
 		{ values: theme("animationIterations") }
+	);
+
+	matchUtilities(
+		{ "animation-direction": (value) => ({ animationDirection: value }) },
+		{ values: theme("animationDirection") }
 	);
 
 	matchUtilities(
