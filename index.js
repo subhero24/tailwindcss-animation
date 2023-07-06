@@ -1,5 +1,7 @@
 let plugin = require("tailwindcss/plugin");
 
+const COMMA = /\,(?![^(]*\))/g;
+
 let defaultOptions = {
 	theme: {
 		animationIterations: {
@@ -112,12 +114,27 @@ function animationPlugin({ addUtilities, matchUtilities, theme, config, variants
 	);
 
 	matchUtilities(
-		{ "animation-ease": (value) => ({ animationTimingFunction: value }) },
+		{
+			"animation-ease": (value) => {
+				if (typeof value === "string") {
+					value = value.split(COMMA).map((value) => theme("animationTimingFunction")[value] ?? value);
+				}
+				return { animationTimingFunction: value };
+			},
+		},
 		{ values: theme("animationTimingFunction") }
 	);
 
 	matchUtilities(
-		{ "transition-ease": (value) => ({ transitionTimingFunction: value }) },
+		{
+			"transition-ease": (value) => {
+				if (typeof value === "string") {
+					value = value.split(COMMA).map((value) => theme("transitionTimingFunction")[value] ?? value);
+				}
+
+				return { transitionTimingFunction: value };
+			},
+		},
 		{ values: theme("transitionTimingFunction") }
 	);
 
