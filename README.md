@@ -21,6 +21,7 @@ This plugin uses explicit transition and animation prefixes for classes, so feel
 ```javascript
 export default {
 	corePlugins: {
+		animation: false,
 		transitionDelay: false,
 		transitionDuration: false,
 		transitionTimingFunction: false,
