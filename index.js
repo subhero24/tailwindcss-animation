@@ -75,6 +75,9 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 	let defaultTransitionTimingFunction = theme("transitionTimingFunction.DEFAULT");
 
 	let prefix = (name) => e(config("prefix") + name);
+	let filter = (key) =>
+		Object.fromEntries(Object.entries(theme(key) ?? {}).filter(([modifier]) => modifier !== "DEFAULT"));
+
 	let keyframes = Object.fromEntries(
 		Object.entries(theme("keyframes") ?? {}).map(([key, value]) => {
 			return [key, { [`@keyframes ${prefix(key)}`]: value }];
@@ -134,7 +137,7 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 
 	matchUtilities(
 		{ "animation-duration": (value) => ({ animationDuration: value }) },
-		{ values: theme("animationDuration") }
+		{ values: filter("animationDuration") }
 	);
 
 	matchUtilities({ "fill-mode": (value) => ({ animationFillMode: value }) }, { values: theme("animationFillMode") });
@@ -158,7 +161,7 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 
 	matchUtilities(
 		{ "animation-ease": (value) => ({ animmationTimingFunction: value }) },
-		{ values: theme("animationTimingFunction") }
+		{ values: filter("animationTimingFunction") }
 	);
 
 	// Transitions
@@ -189,12 +192,12 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 
 	matchUtilities(
 		{ "transition-duration": (value) => ({ transitionDuration: value }) },
-		{ values: theme("transitionDuration") }
+		{ values: filter("transitionDuration") }
 	);
 
 	matchUtilities(
 		{ "transition-ease": (value) => ({ transitionTimingFunction: value }) },
-		{ values: theme("transitionTimingFunction") }
+		{ values: filter("transitionTimingFunction") }
 	);
 }
 

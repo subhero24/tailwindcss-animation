@@ -22,9 +22,9 @@ This plugin uses explicit transition and animation prefixes for classes, so feel
 export default {
 	corePlugins: {
 		animation: false,
-		transition: false,
 		transitionDelay: false,
 		transitionDuration: false,
+		transitionProperty: false,
 		transitionTimingFunction: false,
 	},
 };
