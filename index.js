@@ -1,5 +1,7 @@
 import plugin from "tailwindcss/plugin";
 
+import parseAnimationValue from "./utils/parse-animation-value.js";
+
 let defaultOptions = {
 	theme: {
 		animationDelay: {
@@ -65,6 +67,11 @@ let defaultOptions = {
 };
 
 function animationPlugin({ matchUtilities, theme, config, e }) {
+	let defaultAnimationDuration = theme("animationDuration.DEFAULT");
+	let defaultTransitionDuration = theme("transitionDuration.DEFAULT");
+	let defaultAnimationTimingFunction = theme("animationTimingFunction.DEFAULT");
+	let defaultTransitionTimingFunction = theme("transitionTimingFunction.DEFAULT");
+
 	let prefix = (name) => e(config("prefix") + name);
 	let keyframes = Object.fromEntries(
 		Object.entries(theme("keyframes") ?? {}).map(([key, value]) => {
@@ -72,16 +79,50 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 		})
 	);
 
-	// animations
+	// Animations
 
 	matchUtilities(
 		{
 			animation: (value) => {
+				let animations = parseAnimationValue(value);
+
+				return [
+					...animations.flatMap((animation) => keyframes[animation.name]),
+					{
+						animation: animations
+							.map(({ name, value }) => {
+								if (name === undefined || keyframes[name] === undefined) {
+									return value;
+								}
+								return value.replace(name, prefixName(name));
+							})
+							.join(", "),
+					},
+				];
+			},
+		},
+		{ values: theme("animation") }
+	);
+
+	matchUtilities(
+		{
+			"animation-name": (value) => {
 				let values = value.split(COMMA);
 				let names = values.map((value) => prefix(value)).join();
 				let frames = values.map((value) => keyframes[value]);
 
-				return [...frames, { animationName: names }];
+				return [
+					...frames,
+					{
+						animationName: names,
+						...(value === "none"
+							? {}
+							: {
+									animationDuration: defaultAnimationDuration,
+									animationTimingFunction: defaultAnimationTimingFunction,
+							  }),
+					},
+				];
 			},
 		},
 		{ values: Object.fromEntries(Object.keys(theme("keyframes")).map((key) => [key, key])) }
@@ -120,6 +161,25 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 
 	// Transitions
 
+	matchUtilities({ transition: (value) => ({ transition: value }) }, { values: theme("transition") });
+
+	matchUtilities(
+		{
+			"transition-property": (value) => {
+				return {
+					transitionProperty: value,
+					...(value === "none"
+						? {}
+						: {
+								transitionDuration: defaultTransitionDuration,
+								transitionTimingFunction: defaultTransitionTimingFunction,
+						  }),
+				};
+			},
+		},
+		{ values: theme("transitionProperty") }
+	);
+
 	matchUtilities(
 		{ "transition-delay": (value) => ({ transitionDelay: value }) },
 		{ values: theme("transitionDelay") }
@@ -136,4 +196,4 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 	);
 }
 
-module.exports = plugin(animationPlugin, defaultOptions);
+export default plugin(animationPlugin, defaultOptions);

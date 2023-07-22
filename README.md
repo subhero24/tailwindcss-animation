@@ -21,6 +21,8 @@ This plugin uses explicit transition and animation prefixes for classes, so feel
 ```javascript
 export default {
 	corePlugins: {
+		animation: false,
+		transition: false,
 		transitionDelay: false,
 		transitionDuration: false,
 		transitionTimingFunction: false,
@@ -32,14 +34,21 @@ export default {
 
 ## Animation
 
-### animation name
-
-theme.keyframes
+theme.animation
 
 -   animation-spin
 -   animation-ping
 -   animation-pulse
 -   animation-bounce
+
+### animation name
+
+theme.keyframes
+
+-   animation-name-spin
+-   animation-name-ping
+-   animation-name-pulse
+-   animation-name-bounce
 
 ### animation timing function
 
