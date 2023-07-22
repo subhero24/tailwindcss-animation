@@ -75,14 +75,14 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 	let defaultTransitionTimingFunction = theme("transitionTimingFunction.DEFAULT");
 
 	let prefix = (name) => e(config("prefix") + name);
-	let filter = (key) =>
-		Object.fromEntries(Object.entries(theme(key) ?? {}).filter(([modifier]) => modifier !== "DEFAULT"));
-
 	let keyframes = Object.fromEntries(
 		Object.entries(theme("keyframes") ?? {}).map(([key, value]) => {
 			return [key, { [`@keyframes ${prefix(key)}`]: value }];
 		})
 	);
+
+	let themeWithoutDefault = (key) =>
+		Object.fromEntries(Object.entries(theme(key) ?? {}).filter(([modifier]) => modifier !== "DEFAULT"));
 
 	// Animations
 
@@ -137,7 +137,7 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 
 	matchUtilities(
 		{ "animation-duration": (value) => ({ animationDuration: value }) },
-		{ values: filter("animationDuration") }
+		{ values: themeWithoutDefault("animationDuration") }
 	);
 
 	matchUtilities({ "fill-mode": (value) => ({ animationFillMode: value }) }, { values: theme("animationFillMode") });
@@ -160,8 +160,8 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 	matchUtilities({ direction: (value) => ({ animationDirection: value }) }, { values: theme("animationDirection") });
 
 	matchUtilities(
-		{ "animation-ease": (value) => ({ animmationTimingFunction: value }) },
-		{ values: filter("animationTimingFunction") }
+		{ "animation-ease": (value) => ({ animationTimingFunction: value }) },
+		{ values: themeWithoutDefault("animationTimingFunction") }
 	);
 
 	// Transitions
@@ -192,12 +192,12 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 
 	matchUtilities(
 		{ "transition-duration": (value) => ({ transitionDuration: value }) },
-		{ values: filter("transitionDuration") }
+		{ values: themeWithoutDefault("transitionDuration") }
 	);
 
 	matchUtilities(
 		{ "transition-ease": (value) => ({ transitionTimingFunction: value }) },
-		{ values: filter("transitionTimingFunction") }
+		{ values: themeWithoutDefault("transitionTimingFunction") }
 	);
 }
 
