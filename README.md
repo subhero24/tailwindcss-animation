@@ -3,7 +3,7 @@ This plugin gives you tailwind utility classes for all animation and transition 
 # Install
 
 ```
-npm install https://github.com/subhero24/tailwindcss-animation
+npm install https://github.com/subhero24/tailwindcss-animation -D
 ```
 
 Add the plugin to your tailwind config file

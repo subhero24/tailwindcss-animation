@@ -94,7 +94,7 @@ function animationPlugin({ matchUtilities, theme, config, e }) {
 								if (name === undefined || keyframes[name] === undefined) {
 									return value;
 								}
-								return value.replace(name, prefixName(name));
+								return value.replace(name, prefix(name));
 							})
 							.join(", "),
 					},
