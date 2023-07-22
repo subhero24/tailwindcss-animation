@@ -2,6 +2,8 @@ import plugin from "tailwindcss/plugin";
 
 import parseAnimationValue from "./utils/parse-animation-value.js";
 
+const COMMA = /\,(?![^(]*\))/g; // Comma separator that is not located between brackets. E.g.: `cubiz-bezier(a, b, c)` these don't count.
+
 let defaultOptions = {
 	theme: {
 		animationDelay: {
