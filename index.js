@@ -45,8 +45,8 @@ let defaultOptions = {
 			accumulate: "accumulate",
 		},
 		animationIterations: {
-			0: 0,
-			1: 1,
+			0: "0",
+			1: "1",
 			infinite: "infinite",
 		},
 		animationDirection: {
